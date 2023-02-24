@@ -82,3 +82,44 @@ python mange.py createsuperuser
     ```Python
     gunicorn expense_manager.wsgi
     ```
+
+---
+
+## Running the Project
+
+#### 1. Create superuser
+
+#### 2. Generate Token using `/login` endpoint using superuser credentials
+
+```Python
+import requests
+import json
+
+url = "http://localhost:8000/login/"
+
+payload = json.dumps({
+  "username": "admin",
+  "password": "admin"
+})
+
+headers = {
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+-   The token received in the above step can be used to as a Authorization Header.
+
+-   For other users, use the `/api/v1/user` endpoint to perform CRUD operation(s)
+
+-   To create an Expense category, use the `api/v1/expense_category` endpoint
+
+-   To add an Expense, use the `/api/v1/expense` endpoint
+
+-   To apply filters, keywords can be passed in the <b>params</b> section
+
+-   For more details, click the [here](https://api.postman.com/collections/14667962-2a238661-79bf-442b-b0a3-a2ecb0ce03bb?access_key=PMAT-01GT1XWBPAH5E5TYE8XEN6YD1F) for the Postman Collection

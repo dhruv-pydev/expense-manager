@@ -11,30 +11,30 @@ class ExpenseCategorySerializer(serializers.ModelSerializer):
 
 class ExpenseSerializer(serializers.ModelSerializer):
 
-    def validate(self, attrs):
-        expense_category = attrs.pop("category", None)
-        expense_categories = self.context.get("expense_categories", [])
+    # def validate(self, attrs):
+    #     expense_category = attrs.pop("category", None)
+    #     expense_categories = self.context.get("expense_categories", [])
 
-        if not expense_category:
-            return super().validate(attrs)
+    #     if not expense_category:
+    #         return super().validate(attrs)
 
-        if expense_category in expense_categories:
-            attrs["category"] = models.ExpenseCategory.objects.get(
-                title=expense_category)
-        else:
-            data = {"title": expense_category, "user": attrs.get("user").id}
-            serializer = ExpenseCategorySerializer(data=data)
-            if serializer.is_valid():
-                attrs["category"] = serializer.save()
-                return super().validate(attrs)
-            else:
-                raise exceptions.ValidationError(serializer.errors)
+    #     if expense_category in expense_categories:
+    #         attrs["category"] = models.ExpenseCategory.objects.get(
+    #             title=expense_category)
+    #     else:
+    #         data = {"title": expense_category, "user": attrs.get("user").id}
+    #         serializer = ExpenseCategorySerializer(data=data)
+    #         if serializer.is_valid():
+    #             attrs["category"] = serializer.save()
+    #             return super().validate(attrs)
+    #         else:
+    #             raise exceptions.ValidationError(serializer.errors)
 
-    # category = serializers.SlugRelatedField(
-    #     slug_field="title",
-    #     queryset=models.ExpenseCategory.objects.all(),
-    #     required=False
-    # )
+    category = serializers.SlugRelatedField(
+        slug_field="title",
+        queryset=models.ExpenseCategory.objects.all(),
+        required=True
+    )
 
     class Meta:
         model = models.Expense
