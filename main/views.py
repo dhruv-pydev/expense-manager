@@ -18,3 +18,10 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ExpenseSerializer
     filter_backends = (rest_framework.DjangoFilterBackend,)
     filterset_class = filters.ExpenseFilter
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({
+            "expense_categories": models.ExpenseCategory.objects.values_list("title", flat=True)
+        })
+        return context

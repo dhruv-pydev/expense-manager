@@ -5,6 +5,8 @@ from django.contrib.auth import models as auth_models
 
 from user_management import models
 
+from main import serializers as main_serializers
+
 
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False, allow_null=True)
@@ -29,9 +31,16 @@ class MainUserSerializer(serializers.ModelSerializer):
     )
     contact_number = serializers.CharField(required=False)
 
+    user_expenses = main_serializers.ExpenseSerializer(
+        read_only=True, many=True)
+
+    user_expense_categories = main_serializers.ExpenseCategorySerializer(
+        read_only=True, many=True
+    )
+
     class Meta:
         model = models.MainUser
-        exclude = ["user", "created_at"]
+        exclude = ["user", "created_on", "modified_on"]
         read_only_fields = ["id", ]
 
     def validate(self, attrs):

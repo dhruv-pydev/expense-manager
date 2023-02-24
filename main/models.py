@@ -4,17 +4,15 @@ from user_management import models as user_management_models
 
 
 class ExpenseCategory(user_management_models.BaseModel):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
 
     user = models.ForeignKey(
         to=user_management_models.MainUser,
         on_delete=models.CASCADE,
-        related_name="user_categories",
-        null=True,
-        blank=True
+        related_name="user_expense_categories",
+        # null=True,
+        # blank=True
     )
-
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.title if self.title else "-"
@@ -38,12 +36,10 @@ class Expense(user_management_models.BaseModel):
         to=ExpenseCategory,
         related_name="category_expenses",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True
+        # null=True,
+        # blank=True
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-
     def __str__(self) -> str:
-        description = f"{self.description[:15]}..." if self.description else "-"
+        description = f"{self.description[:10]}..." if self.description else "-"
         return f"{self.amount}: {self.category.__str__()}: {description}"
