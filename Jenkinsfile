@@ -17,7 +17,7 @@ pipeline {
 
         stage('List project dependencies') {
           steps {
-            sh 'pip list'
+            sh 'pip3 list'
           }
         }
 
