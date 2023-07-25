@@ -7,5 +7,11 @@ pipeline {
       }
     }
 
+    stage('List project files') {
+      steps {
+        sh 'ls -la'
+      }
+    }
+
   }
 }
