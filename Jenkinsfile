@@ -8,8 +8,19 @@ pipeline {
     }
 
     stage('List project files') {
-      steps {
-        sh 'ls -la'
+      parallel {
+        stage('List project files') {
+          steps {
+            sh 'ls -la'
+          }
+        }
+
+        stage('List project dependencies') {
+          steps {
+            sh 'pip list'
+          }
+        }
+
       }
     }
 
